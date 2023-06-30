@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "lIpskF7MIfqsxtYhSwcBG00idKxsnyqvM4TsaOmvECE=",
+  "Source": "HospitalManagementServer",
+  "BasePath": "_content/HospitalManagementServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
