@@ -1,0 +1,7 @@
+.active {
+    color: red; /* Change the color for active link */
+  }
+  
+  .nav-link:hover {
+    color: blue; /* Change the color for hover effect */
+  }

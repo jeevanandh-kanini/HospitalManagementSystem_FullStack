@@ -1,0 +1,66 @@
+.login-container {
+    position: absolute;
+    background-image: url('https://www.piramalrealty.com/blog/wp-content/uploads/2022/11/20221118-article-banner-04.jpg');
+   
+    
+    height: 100%;
+    width: 100%;
+    
+  }
+  .login-container .row{
+    margin-left: 60%;
+
+  }
+  .login-form {
+
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .animated {
+    animation: fadeIn 1s ease-in-out;
+  }
+
+
+  /* slider */
+
+  .slider{ width:100%; background:url('https://www.imd-soft.co.uk/media/1785/imd_hospitalwide_banner1.jpg?width=1600&height=530&mode=crop') no-repeat; height:350px; float:left;background-size: 100% auto; }
+.slider-h3{ font-size:30px; padding:100px 0px 0px 100px; color:#000; text-shadow:1px 0.5px #CCC;}
+.btn{ background:#0099da; color:#FFF; padding:9px 20px; font-size:16px; 
+text-decoration:none; border-radius:3px; text-shadow:none;}
+.btn:hover{ background:#0080C0;}
+
+
+  /* slider */
+
+
+
+  /* Footer */
+  .footer{ width:100%; float:left; background:#333;}
+.footer-parts{ width:300px; float:left; padding:0px 10px;}
+.footer-parts-h4{ font-size:18px; padding:15px 10px 0px; color:#FFF;}
+.footer-parts ul{list-style:none; padding:0px;}
+.footer-parts ul li{list-style:none; font-size:12px; padding:5px; margin:5px 0px; font-weight:bold;}
+.footer-parts ul li a{padding:8px 10px; margin:2px 0px; text-decoration:none; color:#CCC;}
+.footer-parts ul li a:hover{color:#FFF;}
+.copyrights{ width:100%; font-size:12px; background:#000; float:left; padding:15px 30px 15px 30px; color:#FFF; }
+.copyrights-left{ width:940px; float:left;}
+.copyrights-left a{ color:#FFF; text-decoration:none;}
+.copyrights-left a:hover{color:#CCC;}
+.copyrights-right{ width:300px; float:left; text-align:right;}
+.copyrights-right a{ color:#FFF; text-decoration:none;}
+.copyrights-right a:hover{color:#CCC;}
+.fa{ color:#FFF;}
+
+
+
+
+
+
