@@ -1,0 +1,17 @@
+.teacher-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .teacher-details {
+    margin-left: 20px;
+  }
+  
+  .teacher-actions {
+    margin-top: 10px;
+  }
+
+  .card {
+    max-width: 400px; /* Adjust the desired maximum width */
+    /* Centers the card horizontally */
+  }

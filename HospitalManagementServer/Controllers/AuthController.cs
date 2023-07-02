@@ -51,6 +51,7 @@ namespace HospitalManagementServer.Controllers
                 Password = passwordHash,
                 Email = ud.Email,
                 Role = ud.Role,
+                
             };
 
             uDbC.RegisterUser.Add(user);
@@ -106,7 +107,8 @@ namespace HospitalManagementServer.Controllers
                     var patient = new Patient()
                     {
                         Id = user.Id,
-                        Name = user.UserName
+                        Name = user.UserName,
+                        Age = ud.Age 
                     };
                     uDbC.Patients.Add(patient);
                     uDbC.SaveChanges();

@@ -354,7 +354,7 @@ const TeacherListComponent = () => {
     // Fetch the list of teachers from the API
     const fetchTeachers = async () => {
       try {
-        const response = await fetch("https://localhost:7185/api/Teachers");
+        const response = await fetch("https://localhost:7150/api/Doctors");
         if (response.ok) {
           const data = await response.json();
           setTeachers(data);
@@ -374,7 +374,7 @@ const TeacherListComponent = () => {
       const token = sessionStorage.getItem("token");
 
       const response = await fetch(
-        `https://localhost:7185/api/Teachers/${teacherId}`,
+        `https://localhost:7150/api/Doctors/${teacherId}`,
         {
           method: "DELETE",
           headers: {
@@ -404,7 +404,7 @@ const TeacherListComponent = () => {
       const token = sessionStorage.getItem("token");
 
       const response = await fetch(
-        `https://localhost:7185/api/Teachers/${teacherId}/approval?approved=${approved}`,
+        `https://localhost:7150/api/Doctors/${teacherId}/approval?approved=${approved}`,
         {
           method: "PATCH",
           headers: {
@@ -435,50 +435,67 @@ const TeacherListComponent = () => {
 
   return (
     <div className="container">
-      <h1>All Teachers</h1>
-      <table className="table">
-        <thead className="thead-dark">
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Approved</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {teachers.map((teacher) => (
-            <tr key={teacher.id}>
-              <td>{teacher.name}</td>
-              <td>{teacher.description}</td>
-              <td>{teacher.approved ? "Yes" : "No"}</td>
-              <td>
-                {teacher.approved ? (
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleApproval(teacher.id, false)}
-                  >
-                    Reject
-                  </button>
-                ) : (
-                  <button
-                    className="btn btn-success"
-                    onClick={() => handleApproval(teacher.id, true)}
-                  >
-                    Approve
-                  </button>
-                )}
+  <h1>Doctors List</h1>
+  <table className="table">
+    <thead className="thead-dark">
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Specialization</th>
+        <th>Approved</th>
+        <th style={{ width: "30%" }}>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {teachers.map((teacher) => (
+        <tr key={teacher.id}>
+          <td>
+            <img
+              src={"https://localhost:7150/Images/"+teacher.imageName}
+              alt="Teacher"
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+              }}
+            />
+          </td>
+          <td style={{ whiteSpace: "nowrap" }}>{teacher.name}</td>
+          <td style={{ width: "25%" }}>{teacher.specialization}</td>
+          <td>{teacher.approved ? "Yes" : "No"}</td>
+          <td>
+            <div className="btn-group">
+              {teacher.approved ? (
                 <button
-                  className="btn btn-outline-danger"
-                  onClick={() => handleDelete(teacher.id)}
+                  className="btn btn-danger"
+                  onClick={() => handleApproval(teacher.id, false)}
                 >
-                  Delete
+                  Reject
                 </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+              ) : (
+                <button
+                  className="btn btn-success"
+                  onClick={() => handleApproval(teacher.id, true)}
+                >
+                  Approve
+                </button>
+              )}
+              <button
+                className="btn btn-outline-danger"
+                onClick={() => handleDelete(teacher.id)}
+              >
+                Delete
+              </button>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+
+  
   );
 };
 

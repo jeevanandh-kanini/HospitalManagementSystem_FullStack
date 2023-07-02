@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
+import Landing from "../LandingComponent/Landing";
 
 const Home = () => {
     const usenavigate = useNavigate();
@@ -65,38 +66,16 @@ const Home = () => {
      
 
     return (
-        <div>
+        // <div>
             
-            <h1 className="text-center">Welcome to School Management Application {user} </h1>
+        //     <h1 className="text-center">Welcome to School Management Application {user} </h1>
 
-            <h1 className="text-center">You Are Logged In As {role}</h1>
+        //     <h1 className="text-center">You Are Logged In As {role}</h1>
 
-            <h1 className="text-center">Hello  {rolefromtoken}</h1>
-            {/* <table className="table table-bordered">
-                <thead>
-                    <tr>
-                        <td>Code</td>
-                        <td>Name</td>
-                        <td>Email</td>
-                        <td>Credit Limit</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {customerlist &&
-                        customerlist.map(item => (
-                            <tr key={item.id}>
-        <td>{item.id}</td>
-        <td>{item.name}</td>
-        <td>{item.email}</td>
-        <td>{item.creditLimit}</td>
-                            </tr>
-
-                        ))
-                    }
-                </tbody>
-
-            </table> */}
-        </div>
+        //     <h1 className="text-center">Hello  {rolefromtoken}</h1>
+           
+        // </div>
+        <Landing></Landing>
     );
 }
 

@@ -148,6 +148,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import './Register.css'
+
 const Register = () => {
   const [userName, setUsername] = useState("");
   const [role, setRole] = useState("");
@@ -156,6 +158,7 @@ const Register = () => {
   const [experience, setExperience] = useState("");
   const [photo, setPhoto] = useState(null);
   const [specialization,setSpecialization] =useState("");
+  const [age, setAge] = useState("");
 
   const navigate = useNavigate();
 
@@ -202,6 +205,7 @@ const Register = () => {
     formData.append("Experience", experience);
     formData.append("Specialization", specialization);
     formData.append("ImageFile", photo);
+    formData.append("Age", age);
 
 
 console.log(formData);
@@ -232,7 +236,36 @@ console.log(formData);
   };
 
   return (
+    <>
     <div>
+      <nav className="navbar navbar-expand-lg navbar-light bg-primary">
+        <Link className="navbar-brand" to="/">
+          Your Logo
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ml-auto">
+            <li className="nav-item">
+              
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/login">
+                Back To Login
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </nav>
       <div className="offset-lg-3 col-lg-6">
         <form className="container" onSubmit={handleSubmit}>
           <div className="card">
@@ -326,6 +359,20 @@ console.log(formData);
                     </div>
                   </>
                 )}
+
+{role === "patient" && (
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <label>Age</label>
+                      <input
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        type="number"
+                        className="form-control"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             <div className="card-footer">
@@ -340,7 +387,11 @@ console.log(formData);
           </div>
         </form>
       </div>
+      
+      
     </div>
+    
+  </>
   );
 };
 

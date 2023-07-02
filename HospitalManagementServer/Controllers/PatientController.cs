@@ -1,71 +1,51 @@
-﻿using HospitalManagementServer.Models;
-using Microsoft.AspNetCore.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using HospitalManagementServer.Models;
+using HospitalManagementServer.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
-using System;
-using System.Linq;
+
 namespace SchoolManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class PatientController : ControllerBase
     {
+        private readonly IPatientRepository _patientRepository;
 
-        private readonly ApplicationDbContext _context;
-
-        public PatientController(ApplicationDbContext context)
+        public PatientController(IPatientRepository patientRepository)
         {
-            _context = context;
+            _patientRepository = patientRepository;
         }
 
-       
         [HttpGet("patients")]
-        public IActionResult GetAllPatients()
+        public async Task<IActionResult> GetAllPatients()
         {
-            var students = _context.Patients.Include(s => s.Doctors).ToList();
-            return Ok(students);
+            var patients = await _patientRepository.GetAllPatients();
+            return Ok(patients);
         }
-
-
-     
-
 
         [HttpGet("{id}")]
-        public ActionResult<Patient> GetPatient(int id)
+        public async Task<IActionResult> GetPatient(int id)
         {
-            var student = _context.Patients.Find(id);
+            var patient = await _patientRepository.GetPatient(id);
 
-            if (student == null)
+            if (patient == null)
             {
                 return NotFound();
             }
 
-            var teacherIds = _context.DoctorPatients
-                .Where(st => st.PatientId == id)
-                .Select(st => st.DoctorId)
-                .ToList();
-
-            var teachers = _context.Doctors
-                .Where(t => teacherIds.Contains(t.Id))
-                .ToList();
-
-            student.Doctors = teachers;
-
-            return Ok(student);
+            return Ok(patient);
         }
 
-
-    
         [HttpPost]
-        public IActionResult PostPatient([FromBody] Patient student)
+        public async Task<IActionResult> PostPatient([FromBody] Patient patient)
         {
             try
             {
-                _context.Patients.Add(student);
-                _context.SaveChanges();
-
-                return Ok(student);
+                var createdPatient = await _patientRepository.CreatePatient(patient);
+                return Ok(createdPatient);
             }
             catch (Exception ex)
             {
@@ -73,25 +53,19 @@ namespace SchoolManagement.Controllers
             }
         }
 
-        // PUT: api/student/{id}
         [HttpPut("{id}")]
-        public IActionResult PutPatient(int id, [FromBody] Patient studentData)
+        public async Task<IActionResult> PutPatient(int id, [FromBody] Patient patient)
         {
             try
             {
-                var student = _context.Patients.FirstOrDefault(s => s.Id == id);
+                var updatedPatient = await _patientRepository.UpdatePatient(id, patient);
 
-                if (student == null)
+                if (updatedPatient == null)
                 {
                     return NotFound();
                 }
 
-                // Update the student data
-                student.Name = studentData.Name;
-
-                _context.SaveChanges();
-
-                return Ok(student);
+                return Ok(updatedPatient);
             }
             catch (Exception ex)
             {
@@ -99,24 +73,17 @@ namespace SchoolManagement.Controllers
             }
         }
 
-        // DELETE: api/student/{id}
         [HttpDelete("{id}")]
-        public IActionResult DeletePatient(int id)
+        public async Task<IActionResult> DeletePatient(int id)
         {
             try
             {
-                var student = _context.Patients.FirstOrDefault(s => s.Id == id);
+                var result = await _patientRepository.DeletePatient(id);
 
-                RegisterUser ru = _context.RegisterUser.FirstOrDefault(t => t.Id == id);
-
-                if (student == null)
+                if (!result)
                 {
                     return NotFound();
                 }
-
-                _context.Patients.Remove(student);
-                _context.RegisterUser.Remove(ru);
-                _context.SaveChanges();
 
                 return NoContent();
             }
@@ -126,54 +93,44 @@ namespace SchoolManagement.Controllers
             }
         }
 
-
-
-
-
-
         [HttpPost("~/api/patients/{patientId}/doctors/{doctorId}")]
-        public IActionResult AddDoctorToPatient(int patientId, int doctorId)
+        public async Task<IActionResult> AddDoctorToPatient(int patientId, int doctorId)
         {
-            var student = _context.Patients.Find(patientId);
-            var teacher = _context.Doctors.Find(doctorId);
-
-            if (student == null || teacher == null)
+            try
             {
-                return NotFound();
+                var result = await _patientRepository.AddDoctorToPatient(patientId, doctorId);
+
+                if (!result)
+                {
+                    return NotFound();
+                }
+
+                return Ok();
             }
-
-            var studentTeacher = new DoctorPatient
+            catch (Exception ex)
             {
-                PatientId = patientId,
-                DoctorId = doctorId
-            };
-
-            _context.DoctorPatients.Add(studentTeacher);
-            _context.SaveChanges();
-
-            return Ok();
+                return BadRequest(ex.Message);
+            }
         }
 
-
-
-
-
-        // DELETE: api/students/{studentId}/teachers/{teacherId}
         [HttpDelete("~/api/patients/{patientId}/doctors/{doctorId}")]
-        public IActionResult RemoveTeacherFromStudent(int patientId, int doctorId)
+        public async Task<IActionResult> RemoveDoctorFromPatient(int patientId, int doctorId)
         {
-            var studentTeacher = _context.DoctorPatients.FirstOrDefault(st => st.PatientId == patientId && st.DoctorId == doctorId);
-
-            if (studentTeacher == null)
+            try
             {
-                return NotFound();
+                var result = await _patientRepository.RemoveDoctorFromPatient(patientId, doctorId);
+
+                if (!result)
+                {
+                    return NotFound();
+                }
+
+                return NoContent();
             }
-
-            _context.DoctorPatients.Remove(studentTeacher);
-            _context.SaveChanges();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
     }
 }

@@ -40,6 +40,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using HospitalManagementServer.Models;
+using HospitalManagementServer.Repositories;
 
 namespace HospitalManagementServer
 {
@@ -65,8 +66,11 @@ namespace HospitalManagementServer
             services.AddControllers().AddNewtonsoftJson(
                 options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-
-
+            services.AddScoped<IAdminRepository, AdminRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+         /*   services.AddScoped<IBookingRepository, BookingRepository>();*/
+            services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
 
 
             services.AddSwaggerGen(c => {

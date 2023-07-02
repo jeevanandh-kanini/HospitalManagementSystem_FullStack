@@ -81,6 +81,7 @@
 
 
 import React, { useState, useEffect } from "react";
+import './AdminComponent.css'
 
 const AdminComponent = () => {
   const [teachers, setTeachers] = useState([]);
@@ -89,7 +90,7 @@ const AdminComponent = () => {
     // Fetch the list of teachers pending approval from the API
     const fetchPendingTeachers = async () => {
       try {
-        const response = await fetch("https://localhost:7185/api/Teachers?approved=false");
+        const response = await fetch("https://localhost:7150/api/Doctors?approved=false");
         if (response.ok) {
           const data = await response.json();
           setTeachers(data);
@@ -109,7 +110,7 @@ const AdminComponent = () => {
       const token = sessionStorage.getItem("token");
 
       const response = await fetch(
-        `https://localhost:7185/api/Teachers/${teacherId}/approval?approved=${approved}`,
+        `https://localhost:7150/api/Doctors/${teacherId}/approval?approved=${approved}`,
         {
           method: "PATCH",
           headers: {
@@ -138,28 +139,45 @@ const AdminComponent = () => {
 
   return (
     <div className="container">
-      <h1>Pending Teachers</h1>
-      {teachers.map((teacher) => (
-        <div key={teacher.id} className="card mb-3">
+  <h1>Pending Approval</h1>
+  <div className="row">
+    {teachers.map((teacher) => (
+      <div key={teacher.id} className="col-md-4">
+        <div className="card mb-3">
           <div className="card-body">
-            <h3 className="card-title">{teacher.name}</h3>
-            <p className="card-text">{teacher.description}</p>
-            <button
-              className="btn btn-success mr-2"
-              onClick={() => handleApproval(teacher.id, true)}
-            >
-              Approve
-            </button>
-            <button
-              className="btn btn-danger"
-              onClick={() => handleApproval(teacher.id, false)}
-            >
-              Reject
-            </button>
+            <div className="teacher-info">
+              <img
+                src={"https://localhost:7150/Images/" + teacher.imageName}
+                alt="Teacher Profile"
+                className="rounded-circle"
+                style={{ width: '100px', height: '100px' }}
+              />
+              <div className="teacher-details">
+                <h3 className="card-title">Name {teacher.name}</h3>
+                <p className="card-text">{teacher.specialization}</p>
+                {/* <p className="card-text">{teacher.experience}</p> */}
+              </div>
+            </div>
+            <div className="teacher-actions">
+              <button
+                className="btn btn-success mr-2"
+                onClick={() => handleApproval(teacher.id, true)}
+              >
+                Approve
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleApproval(teacher.id, false)}
+              >
+                Reject
+              </button>
+            </div>
           </div>
         </div>
-      ))}
-    </div>
+      </div>
+    ))}
+  </div>
+</div>
   );
 };
 

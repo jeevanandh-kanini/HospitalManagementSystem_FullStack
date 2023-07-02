@@ -18,6 +18,8 @@ namespace HospitalManagementServer.Models
 
         public DbSet<DoctorPatient> DoctorPatients { get; set; }
 
+        public DbSet<Appointment> Appointments { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

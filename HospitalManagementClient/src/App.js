@@ -9,9 +9,13 @@ import Appheader from './components/HeaderComponent/Appheader';
 
 
 import StudentComponent from './components/StudentComponent/StudentComponent';
-import TeacherComponent from './components/TeacherComponent/TeacherComponent';
+
 import AdminComponent from './components/AdminComponent/AdminComponent';
 import TeacherListComponent from './components/TeacherComponent/TeacherListComponent';
+import UserAppointmentList from './components/AdminComponent/UserAppointmentList';
+import YourAppointments from './components/StudentComponent/YourAppointment';
+import jwt_decode from 'jwt-decode';
+import AppointmentsList from './components/TeacherComponent/AppointmentList';
 
 
 function App() {
@@ -24,7 +28,29 @@ const USER_TYPES ={
   admin:'admin'
 }
 
-const CURRENT_USER_TYPE = sessionStorage.getItem('role');
+
+let token1 = sessionStorage.getItem('role');
+
+
+
+
+const CURRENT_USER_TYPE = token1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
 
@@ -43,9 +69,13 @@ const CURRENT_USER_TYPE = sessionStorage.getItem('role');
 
 
         <Route path='/student' element={<StudentElement><StudentComponent/></StudentElement>}></Route>
-        <Route path='/teacher' element={<TeacherElement><TeacherComponent/></TeacherElement>}></Route>
+        <Route path='/yourappointment' element={<StudentElement><YourAppointments></YourAppointments></StudentElement>}></Route>
+        
+        <Route path='/appointmentlist' element={<TeacherElement><AppointmentsList></AppointmentsList></TeacherElement>}></Route>
         <Route path='/admin' element={<AdminElement><AdminComponent/></AdminElement>}></Route>
         <Route path='/teacherlist' element={<AdminElement><TeacherListComponent/></AdminElement>}></Route>
+
+        <Route path='/userappointmentlist' element={<AdminElement><UserAppointmentList></UserAppointmentList></AdminElement>}></Route>
         <Route path='*' element={<div>Page Not Found</div>}></Route>
       
       </Routes>

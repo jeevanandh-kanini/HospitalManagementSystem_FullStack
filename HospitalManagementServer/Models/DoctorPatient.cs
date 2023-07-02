@@ -21,5 +21,18 @@ namespace HospitalManagementServer.Models
         public int DoctorId { get; set; }
 
         public Doctor Doctor { get; set; }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Add this attribute to generate the booking ID
+        public int BookingId { get; set; } // Add the booking ID property
+
+        public DateTime BookingDateTime { get; set; }
+
+        public string BookingStatus { get; set; }
+
+
+        public string DiseaseDescription { get; set; }
+
+
     }
 }

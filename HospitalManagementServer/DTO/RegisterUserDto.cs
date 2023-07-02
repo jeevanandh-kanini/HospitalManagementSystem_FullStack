@@ -14,6 +14,8 @@ namespace HospitalManagementServer.DTO
         public string? Specialization { get; set; }
         public IFormFile? ImageFile { get; set; }
 
+        public string? Age { get; set; }
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿using HospitalManagementServer.Models;
+using HospitalManagementServer.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,20 +11,19 @@ namespace HospitalManagementServer.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IAdminRepository _adminRepository;
 
-        public AdminController(ApplicationDbContext context)
+        public AdminController(IAdminRepository adminRepository)
         {
-            _context = context;
+            _adminRepository = adminRepository;
         }
-
 
         [HttpGet]
         public IActionResult GetAllAdmins()
         {
             try
             {
-                var admins = _context.Admins.ToList();
+                var admins = _adminRepository.GetAllAdmins();
                 return Ok(admins);
             }
             catch (Exception ex)
@@ -32,13 +32,12 @@ namespace HospitalManagementServer.Controllers
             }
         }
 
-        // GET: api/admin/{id}
         [HttpGet("{id}")]
         public IActionResult GetAdminById(int id)
         {
             try
             {
-                var admin = _context.Admins.FirstOrDefault(a => a.Id == id);
+                var admin = _adminRepository.GetAdminById(id);
 
                 if (admin == null)
                 {
@@ -53,15 +52,12 @@ namespace HospitalManagementServer.Controllers
             }
         }
 
-        // POST: api/admin
         [HttpPost]
         public IActionResult PostAdmin([FromBody] Admin admin)
         {
             try
             {
-                _context.Admins.Add(admin);
-                _context.SaveChanges();
-
+                _adminRepository.AddAdmin(admin);
                 return Ok(admin);
             }
             catch (Exception ex)
@@ -70,23 +66,18 @@ namespace HospitalManagementServer.Controllers
             }
         }
 
-        // PUT: api/admin/{id}
         [HttpPut("{id}")]
         public IActionResult PutAdmin(int id, [FromBody] Admin adminData)
         {
             try
             {
-                var admin = _context.Admins.FirstOrDefault(a => a.Id == id);
+                _adminRepository.UpdateAdmin(id, adminData);
+                var admin = _adminRepository.GetAdminById(id);
 
                 if (admin == null)
                 {
                     return NotFound();
                 }
-
-                // Update the admin data
-                admin.Name = adminData.Name;
-
-                _context.SaveChanges();
 
                 return Ok(admin);
             }
@@ -96,25 +87,19 @@ namespace HospitalManagementServer.Controllers
             }
         }
 
-        // DELETE: api/admin/{id}
         [HttpDelete("{id}")]
         public IActionResult DeleteAdmin(int id)
         {
             try
             {
-                var admin = _context.Admins.FirstOrDefault(a => a.Id == id);
-                RegisterUser ru = _context.RegisterUser.FirstOrDefault(t => t.Id == id);
+                var admin = _adminRepository.GetAdminById(id);
 
                 if (admin == null)
                 {
                     return NotFound();
                 }
 
-                _context.Admins.Remove(admin);
-
-                _context.RegisterUser.Remove(ru);
-                _context.SaveChanges();
-
+                _adminRepository.DeleteAdmin(id);
                 return NoContent();
             }
             catch (Exception ex)
@@ -124,3 +109,4 @@ namespace HospitalManagementServer.Controllers
         }
     }
 }
+

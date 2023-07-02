@@ -1,4 +1,4 @@
-﻿
+﻿/*
 
 using HospitalManagementServer.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -216,5 +216,76 @@ namespace SchoolManagement.Controllers
         }
 
 
+    }
+}
+*/
+
+
+using HospitalManagementServer.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using HospitalManagementServer.Repositories;
+
+namespace SchoolManagement.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DoctorsController : ControllerBase
+    {
+        private readonly IDoctorRepository _doctorRepository;
+
+        public DoctorsController(IDoctorRepository doctorRepository)
+        {
+            _doctorRepository = doctorRepository;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DoctorResponse>>> GetDoctors(bool? approved = null)
+        {
+            var doctors = await _doctorRepository.GetDoctors(approved);
+            return Ok(doctors);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Doctor>> CreateDoctor(DoctorCreateUpdateRequest request)
+        {
+            var doctor = await _doctorRepository.CreateDoctor(request);
+            return CreatedAtAction(nameof(GetDoctor), new { id = doctor.Id }, doctor);
+        }
+
+        [HttpPatch("{id}/approval")]
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> UpdateDoctorApproval(int id, bool approved)
+        {
+            return await _doctorRepository.UpdateDoctorApproval(id, approved);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Doctor>> GetDoctor(int id)
+        {
+            return await _doctorRepository.GetDoctor(id);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDoctor(int id)
+        {
+            return await _doctorRepository.DeleteDoctor(id);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateDoctor(int id, [FromForm] DoctorWithImage request)
+        {
+            return await _doctorRepository.UpdateDoctor(id, request);
+        }
+
+        [HttpGet("{doctorId}/patients")]
+        public async Task<ActionResult<IEnumerable<Patient>>> GetPatientsByDoctor(int doctorId)
+        {
+            return await _doctorRepository.GetPatientsByDoctor(doctorId);
+        }
     }
 }

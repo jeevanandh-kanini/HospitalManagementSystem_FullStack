@@ -1,1070 +1,598 @@
-// import React, { useState, useEffect } from "react";
-
-// const StudentComponent = () => {
-//   const [teachers, setTeachers] = useState([]);
-
-//   useEffect(() => {
-//     // Fetch the list of approved teachers from the API
-//     const fetchTeachers = async () => {
-//       try {
-//         const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setTeachers(data);
-//         } else {
-//           throw new Error("Error fetching teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching teachers:", error);
-//       }
-//     };
-
-//     fetchTeachers();
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>Approved Teachers</h1>
-//       {teachers.map((teacher) => (
-//         <div key={teacher.id}>
-//           <h3>{teacher.name}</h3>
-//           <p>{teacher.description}</p>
-//           {/* Add more teacher details as needed */}
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
 
 
-// import React, { useState, useEffect } from "react";
-
-// const StudentComponent = () => {
-//   const [teachers, setTeachers] = useState([]);
-
-//   useEffect(() => {
-//     // Fetch the list of approved teachers from the API
-//     const fetchTeachers = async () => {
-//       try {
-//         const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setTeachers(data);
-//         } else {
-//           throw new Error("Error fetching teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching teachers:", error);
-//       }
-//     };
-
-//     fetchTeachers();
-//   }, []);
-
-//   return (
-//     <div className="container">
-//       <h1>Approved Teachers</h1>
-//       {teachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
 
 
-// import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from 'react';
+// import Modal from 'react-bootstrap/Modal';
+// import Form from 'react-bootstrap/Form';
+// import Button from 'react-bootstrap/Button';
+// import jwt_decode from 'jwt-decode';
+// import { toast } from "react-toastify";
+// const DoctorsList = () => {
+//   const [doctors, setDoctors] = useState([]);
+//   const [showModal, setShowModal] = useState(false);
+//   const [diseaseDescription, setDiseaseDescription] = useState('');
+//   const [bookingDateTime, setBookingDateTime] = useState('');
 
-// const StudentComponent = () => {
-//   const [teachers, setTeachers] = useState([]);
-//   const [selectedTeacherId, setSelectedTeacherId] = useState(null);
 
-//   let [sid,setSid] =useState(sessionStorage.getItem('id'));
+//   const [rolefromtoken,setRoleFromToken] = useState("");
 
-//   useEffect(() => {
-//     // Fetch the list of approved teachers from the API
-//     const fetchTeachers = async () => {
-//       try {
-//         const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setTeachers(data);
-//         } else {
-//           throw new Error("Error fetching teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching teachers:", error);
-//       }
-//     };
+//   const [patientidfromtoken,setpatientidFromToken] = useState("");
 
-//     fetchTeachers();
-//   }, []);
+//   const[doctorid1,setDoctorid] =useState("");
+   
+   
 
-//   const handleAddTeacher = async () => {
-//     if (selectedTeacherId) {
-//       try {
-//         const response = await fetch(`https://localhost:7185/api/Student/addTeacher/${sid}?teacherId=${selectedTeacherId}`, {
-//           method: "PUT",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         });
+
         
 
-//         if (response.ok) {
+//   useEffect(() => {
+//     fetchData();
+
+//     let token1 = sessionStorage.getItem('token');
+       
+    
+        
+    
+//         if (token1) {
+//             const tokenPayload = jwt_decode(token1);
+//             setRoleFromToken(tokenPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']) // Assuming the role property is named 'Role'
+//            setpatientidFromToken(tokenPayload['UserId'])
+//           }
+
           
-
-//           console.log("Teacher added successfully");
-//         } else {
-//           throw new Error("Error adding teacher");
-//         }
-//       } catch (error) {
-//         console.error("Error adding teacher:", error);
-//       }
-//     } else {
-//       console.error("No teacher selected");
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Approved Teachers</h1>
-//       {teachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//           </div>
-//         </div>
-//       ))}
-
-//       <div className="mt-3">
-//         <h2>Add Teacher to Student</h2>
-//         <div className="form-group">
-//           <label htmlFor="teacherSelect">Select Teacher:</label>
-//           <select id="teacherSelect" className="form-control" onChange={(e) => setSelectedTeacherId(e.target.value)}>
-//             <option value="">Select Teacher</option>
-//             {teachers.map((teacher) => (
-//               <option key={teacher.id} value={teacher.id}>
-//                 {teacher.name}
-//               </option>
-//             ))}
-//           </select>
-//         </div>
-//         <button className="btn btn-primary" onClick={handleAddTeacher}>
-//           Add Teacher
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
-
-
-
-
-// import React, { useState, useEffect } from "react";
-
-// const SelectedTeachersComponent = ({ selectedTeachers }) => {
-//   return (
-//     <div className="container">
-//       <h1>Selected Teachers</h1>
-//       {selectedTeachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// const StudentComponent = () => {
-//   const [teachers, setTeachers] = useState([]);
-//   const [selectedTeacherId, setSelectedTeacherId] = useState(null);
-//   const [selectedTeachers, setSelectedTeachers] = useState([]);
-//   let [sid, setSid] = useState(sessionStorage.getItem("id"));
-
-//   useEffect(() => {
-//     // Fetch the list of approved teachers from the API
-//     const fetchTeachers = async () => {
-//       try {
-//         const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setTeachers(data);
-//         } else {
-//           throw new Error("Error fetching teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching teachers:", error);
-//       }
-//     };
-
-//     fetchTeachers();
 //   }, []);
 
-//   const handleAddTeacher = async () => {
-//     if (selectedTeacherId) {
-//       try {
-//         const response = await fetch(`https://localhost:7185/api/Student/addTeacher/${sid}?teacherId=${selectedTeacherId}`, {
-//           method: "PUT",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         });
+//   console.log(rolefromtoken);
+//   console.log(patientidfromtoken);
 
-//         if (response.ok) {
-//           // Add the selected teacher to the list of selected teachers
-//           const selectedTeacher = teachers.find((teacher) => teacher.id === selectedTeacherId);
-//           if (selectedTeacher) {
-//             setSelectedTeachers([...selectedTeachers, selectedTeacher]);
-//           }
-//           console.log("Teacher added successfully");
-//         } else {
-//           throw new Error("Error adding teacher");
-//         }
-//       } catch (error) {
-//         console.error("Error adding teacher:", error);
-//       }
-//     } else {
-//       console.error("No teacher selected");
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Approved Teachers</h1>
-//       {teachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//           </div>
-//         </div>
-//       ))}
-
-//       <div className="mt-3">
-//         <h2>Add Teacher to Student</h2>
-//         <div className="form-group">
-//           <label htmlFor="teacherSelect">Select Teacher:</label>
-//           <select
-//             id="teacherSelect"
-//             className="form-control"
-//             onChange={(e) => setSelectedTeacherId(e.target.value)}
-//           >
-//             <option value="">Select Teacher</option>
-//             {teachers.map((teacher) => (
-//               <option key={teacher.id} value={teacher.id}>
-//                 {teacher.name}
-//               </option>
-//             ))}
-//           </select>
-//         </div>
-//         <button className="btn btn-primary" onClick={handleAddTeacher}>
-//           Add Teacher
-//         </button>
-//       </div>
-
-//       {/* Render the SelectedTeachersComponent and pass the selectedTeachers as a prop */}
-//       <SelectedTeachersComponent selectedTeachers={selectedTeachers} />
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
-
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-
-// const SelectedTeachersComponent = ({ selectedTeachers }) => {
-//   return (
-//     <div className="container">
-//       <h1>Selected Teachers</h1>
-//       {selectedTeachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// const StudentComponent = () => {
-//   const [student, setStudent] = useState(null);
-//   let [sid, setSid] = useState(sessionStorage.getItem("id"));
-
-//   useEffect(() => {
-//     const fetchStudent = async () => {
-//       try {
-//         const response = await fetch(`https://localhost:7185/api/Student/${sid}`);
-//         if (response.ok) {
-//           const data = await response.json();
-//           setStudent(data);
-//         } else {
-//           throw new Error("Error fetching student details");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching student details:", error);
-//       }
-//     };
-
-//     fetchStudent();
-//   }, []);
-
-//   const handleAddTeacher = async (selectedTeacherId) => {
-//     if (selectedTeacherId) {
-//       try {
-//         const response = await fetch(
-//           `https://localhost:7185/api/Student/addTeacher/${sid}?teacherId=${selectedTeacherId}`,
-//           {
-//             method: "PUT",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           }
-//         );
-
-//         if (response.ok) {
-//           const updatedStudent = { ...student };
-//           const newTeacherResponse = await fetch(`https://localhost:7185/api/Teachers/${selectedTeacherId}`);
-//           if (newTeacherResponse.ok) {
-//             const newTeacher = await newTeacherResponse.json();
-//             updatedStudent.teachers.push(newTeacher);
-//             setStudent(updatedStudent);
-//           } else {
-//             throw new Error("Error fetching new teacher");
-//           }
-
-//           console.log("Teacher added successfully");
-//         } else {
-//           throw new Error("Error adding teacher");
-//         }
-//       } catch (error) {
-//         console.error("Error adding teacher:", error);
-//       }
-//     } else {
-//       console.error("No teacher selected");
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       {student && (
-//         <>
-//           <h1>Approved Teachers</h1>
-//           {student.teachers.map((teacher) => (
-//             <div key={teacher.id} className="card mb-3">
-//               <div className="card-body">
-//                 <h3 className="card-title">{teacher.name}</h3>
-//                 <p className="card-text">{teacher.description}</p>
-//                 {/* Add more teacher details as needed */}
-//               </div>
-//             </div>
-//           ))}
-
-//           <div className="mt-3">
-//             <h2>Add Teacher to Student</h2>
-//             <div className="form-group">
-//               <label htmlFor="teacherSelect">Select Teacher:</label>
-//               <select
-//                 id="teacherSelect"
-//                 className="form-control"
-//                 onChange={(e) => handleAddTeacher(e.target.value)}
-//               >
-//                 <option value="">Select Teacher</option>
-//                 {student.teachers.map((teacher) => (
-//                   <option key={teacher.id} value={teacher.id}>
-//                     {teacher.name}
-//                   </option>
-//                 ))}
-//               </select>
-//             </div>
-//           </div>
-
-//           <SelectedTeachersComponent selectedTeachers={student.teachers} />
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-
-// const SelectedTeachersComponent = ({ selectedTeachers, onRemoveTeacher }) => {
-//   const handleRemoveTeacher = (teacherId) => {
-//     onRemoveTeacher(teacherId);
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Selected Teachers</h1>
-//       {selectedTeachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//             <button className="btn btn-danger" onClick={() => handleRemoveTeacher(teacher.id)}>
-//               Remove
-//             </button>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// const StudentComponent = () => {
-//   const [teachers, setTeachers] = useState([]);
-//   const [selectedTeachers, setSelectedTeachers] = useState([]);
-
-//   useEffect(() => {
-//     const fetchTeachers = async () => {
-//       try {
-//         const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setTeachers(data);
-//         } else {
-//           throw new Error("Error fetching teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching teachers:", error);
-//       }
-//     };
-
-//     fetchTeachers();
-//   }, []);
-
-//   const handleAddTeacher = (teacherId) => {
-//     const teacher = teachers.find((teacher) => teacher.id === teacherId);
-//     if (teacher) {
-//       setSelectedTeachers((prevTeachers) => [...prevTeachers, teacher]);
-//     }
-//   };
-
-//   const handleRemoveTeacher = (teacherId) => {
-//     setSelectedTeachers((prevTeachers) => prevTeachers.filter((teacher) => teacher.id !== teacherId));
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Approved Teachers</h1>
-//       {teachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//             <button className="btn btn-primary" onClick={() => handleAddTeacher(teacher.id)}>
-//               Add Teacher
-//             </button>
-//           </div>
-//         </div>
-//       ))}
-
-//       <SelectedTeachersComponent selectedTeachers={selectedTeachers} onRemoveTeacher={handleRemoveTeacher} />
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-
-// const SelectedTeachersComponent = ({ selectedTeachers, onRemoveTeacher }) => {
-//   const handleRemoveTeacher = (teacherId) => {
-//     onRemoveTeacher(teacherId);
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Selected Teachers</h1>
-//       {selectedTeachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//             <button className="btn btn-danger" onClick={() => handleRemoveTeacher(teacher.id)}>
-//               Remove
-//             </button>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// const StudentComponent = () => {
-//   const [student, setStudent] = useState(null);
-//   const [selectedTeachers, setSelectedTeachers] = useState([]);
-
-//   const fetchStudent = async (studentId) => {
+//   const fetchData = async () => {
 //     try {
-//       const response = await fetch(`https://localhost:7185/api/Student/${studentId}`);
-//       if (response.ok) {
-//         const data = await response.json();
-//         setStudent(data);
-//         setSelectedTeachers(data.teachers);
-//       } else {
-//         throw new Error("Error fetching student details");
-//       }
+//       const response = await fetch('https://localhost:7150/api/Doctors?approved=true');
+//       const jsonData = await response.json();
+//       setDoctors(jsonData);
 //     } catch (error) {
-//       console.error("Error fetching student details:", error);
+//       console.log('Error fetching data:', error);
 //     }
 //   };
 
-//   useEffect(() => {
-//     const studentId = sessionStorage.getItem("id");
-//     if (studentId) {
-//       fetchStudent(studentId);
-//     }
-//   }, []);
+//   const handleAppointment = (doctorId) => {
 
-//   const handleAddTeacher = (teacherId) => {
-//     const teacher = student.teachers.find((teacher) => teacher.id === teacherId);
-//     if (teacher) {
-//       setSelectedTeachers((prevTeachers) => [...prevTeachers, teacher]);
-//     }
-//   };
-
-//   const handleRemoveTeacher = async (teacherId) => {
-//     try {
-//       const response = await fetch(
-//         `https://localhost:7185/api/Student/removeTeacher/${student.id}?teacherId=${teacherId}`,
-//         {
-//           method: "PUT",
-//         }
-//       );
-  
-//       if (response.ok) {
-//         setSelectedTeachers((prevTeachers) =>
-//           prevTeachers.filter((teacher) => teacher.id !== teacherId)
-//         );
-//         console.log("Teacher removed successfully");
-//       } else {
-//         throw new Error("Error removing teacher");
-//       }
-//     } catch (error) {
-//       console.error("Error removing teacher:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       {student && (
-//         <>
-//           <h1>Approved Teachers</h1>
-//           {student.teachers.map((teacher) => (
-//             <div key={teacher.id} className="card mb-3">
-//               <div className="card-body">
-//                 <h3 className="card-title">{teacher.name}</h3>
-//                 <p className="card-text">{teacher.description}</p>
-//                 {/* Add more teacher details as needed */}
-//                 <button className="btn btn-primary" onClick={() => handleAddTeacher(teacher.id)}>
-//                   Add Teacher
-//                 </button>
-//               </div>
-//             </div>
-//           ))}
-
-//           <SelectedTeachersComponent selectedTeachers={selectedTeachers} onRemoveTeacher={handleRemoveTeacher} />
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-
-// const SelectedTeachersComponent = ({ selectedTeachers, onRemoveTeacher }) => {
-//   const handleRemoveTeacher = (teacherId) => {
-//     onRemoveTeacher(teacherId);
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Selected Teachers</h1>
-//       {selectedTeachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//             <button className="btn btn-danger" onClick={() => handleRemoveTeacher(teacher.id)}>
-//               Remove
-//             </button>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// const StudentComponent = () => {
-//   const [teachers, setTeachers] = useState([]);
-//   const [selectedTeachers, setSelectedTeachers] = useState([]);
-
-//   useEffect(() => {
-//     const fetchTeachers = async () => {
-//       try {
-//         const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setTeachers(data);
-//         } else {
-//           throw new Error("Error fetching teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching teachers:", error);
-//       }
-//     };
-
-//     fetchTeachers();
-//   }, []);
-
-//   const handleAddTeacher = (teacherId) => {
-//     const teacher = teachers.find((teacher) => teacher.id === teacherId);
-//     if (teacher) {
-//       setSelectedTeachers((prevTeachers) => [...prevTeachers, teacher]);
-//     }
-//   };
-
-//   const handleRemoveTeacher = async (teacherId) => {
-//     try {
-//       const response = await fetch(
-//         `https://localhost:7185/api/Student/removeTeacher/${sessionStorage.getItem("id")}?teacherId=${teacherId}`,
-//         {
-//           method: "PUT",
-//         }
-//       );
-
-//       if (response.ok) {
-//         setSelectedTeachers((prevTeachers) =>
-//           prevTeachers.filter((teacher) => teacher.id !== teacherId)
-//         );
-//         console.log("Teacher removed successfully");
-//       } else {
-//         throw new Error("Error removing teacher");
-//       }
-//     } catch (error) {
-//       console.error("Error removing teacher:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Approved Teachers</h1>
-//       {teachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//             <button className="btn btn-primary" onClick={() => handleAddTeacher(teacher.id)}>
-//               Add Teacher
-//             </button>
-//           </div>
-//         </div>
-//       ))}
-
-//       <SelectedTeachersComponent selectedTeachers={selectedTeachers} onRemoveTeacher={handleRemoveTeacher} />
-//     </div>
-//   );
-// };
-
-// export default StudentComponent;
-
-
-
-
-
-// import React, { useEffect, useState } from "react";
-
-// const SelectedTeachersComponent = ({ selectedTeachers, onRemoveTeacher }) => {
-//   const handleRemoveTeacher = (teacherId) => {
-//     onRemoveTeacher(teacherId);
-//   };
-
-//   return (
-//     <div className="container">
-//       <h1>Selected Teachers</h1>
-//       {selectedTeachers.map((teacher) => (
-//         <div key={teacher.id} className="card mb-3">
-//           <div className="card-body">
-//             <h3 className="card-title">{teacher.name}</h3>
-//             <p className="card-text">{teacher.description}</p>
-//             {/* Add more teacher details as needed */}
-//             <button className="btn btn-danger" onClick={() => handleRemoveTeacher(teacher.id)}>
-//               Remove
-//             </button>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
-
-// const StudentComponent = () => {
-//   const [selectedTeachers, setSelectedTeachers] = useState([]);
-//   const [approvedTeachers, setApprovedTeachers] = useState([]);
-//   const [sid,setSid] =useState();
-
-
-//   const fetchSelectedTeachers = async () => {
-//     try {
-//       const response = await fetch(`https://localhost:7185/api/Student/${sessionStorage.getItem('id')}`);
-//       if (response.ok) {
-//         const data = await response.json();
-//         const tdata = await data.teachers;
-//         await setSelectedTeachers(tdata);
-//       } else {
-//         throw new Error("Error fetching selected teachers");
-//       }
-//     } catch (error) {
-//       console.error("Error fetching selected teachers:", error);
-//     }
-//   };
-  
-  
-//   useEffect(() => {
-
-//     const setStuid = async () => {
-//       await setSid(sessionStorage.getItem('id'));
-//     }
-    
-//     const fetchSelectedTeachers = async () => {
-//       try {
-//         const response = await fetch(`https://localhost:7185/api/Student/${sessionStorage.getItem('id')}`);
-//         if (response.ok) {
-//           const data = await response.json();
-//           const tdata = await data.teachers;
-//           await setSelectedTeachers(tdata);
-//         } else {
-//           throw new Error("Error fetching selected teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching selected teachers:", error);
-//       }
-//     };
-
-//     const fetchApprovedTeachers = async () => {
-//       try {
-//         const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-//         if (response.ok) {
-//           const data = await response.json();
-//           setApprovedTeachers(data);
-//         } else {
-//           throw new Error("Error fetching approved teachers");
-//         }
-//       } catch (error) {
-//         console.error("Error fetching approved teachers:", error);
-//       }
-//     };
-    
-    
-//     fetchApprovedTeachers();
-//     fetchSelectedTeachers();
+//     setDoctorid(doctorId);
    
-//   },[]);
+//     setShowModal(true);
 
-  
-//   const handleAddTeacher = async (teacherId) => {
-//     if (teacherId) {
-//       try {
-//         const response = await fetch(
-//           `https://localhost:7185/api/Student/addTeacher/${sessionStorage.getItem('id')}?teacherId=${teacherId}`,
-//           {
-//             method: "PUT",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           }
-//         );
-  
-//         if (response.ok) {
-         
-//           fetchSelectedTeachers();
-//           console.log("Teacher added successfully");
-//         } else {
-//           throw new Error("Error adding teacher");
-//         }
-//       } catch (error) {
-//         console.error("Error adding teacher:", error);
-//       }
-//     } else {
-//       console.error("No teacher selected");
-//     }
+    
+    
+    
+    
 //   };
 
-//   const handleRemoveTeacher = async (teacherId) => {
-//     try {
-//       const response = await fetch(
-//         `https://localhost:7185/api/Student/removeTeacher/${sessionStorage.getItem('id')}?teacherId=${teacherId}`,
-//         {
-//           method: "PUT",
-//         }
-//       );
-
-//       if (response.ok) {
-//         setSelectedTeachers((prevTeachers) =>
-//           prevTeachers.filter((teacher) => teacher.id !== teacherId)
-//         );
-//         console.log("Teacher removed successfully");
-//       } else {
-//         throw new Error("Error removing teacher");
-//       }
-//     } catch (error) {
-//       console.error("Error removing teacher:", error);
-//     }
+//   const handleCloseModal = () => {
+//     setShowModal(false);
+//     setDiseaseDescription('');
+//     setBookingDateTime('');
+//     setDoctorid('');
 //   };
+
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+
+    
+
+//     const formattedDateTime = new Date(bookingDateTime).toISOString();
+
+//     const encodedDate = encodeURIComponent(bookingDateTime);
+//     const apiUrl = `https://localhost:7150/api/Booking?patientId=${patientidfromtoken}&doctorId=${doctorid1}&bookingDateTime=${encodedDate}`;
+
+//     fetch(apiUrl, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         patientId: patientidfromtoken,
+//         doctorId: doctorid1,
+//         bookingDateTime: encodedDate,
+//       }),
+//     })
+//       .then((response) => {
+//         console.log('Raw response:', response);
+//         toast.success("Appointment Booked Successfully", {
+//           autoClose: 1000, // Duration in milliseconds (2 seconds)
+//         });
+//         handleCloseModal();
+//         return response.json();
+        
+//       })
+//       .then((data) => {
+//         toast.error("Booking Failed :" + data);
+//         handleCloseModal();
+//       })
+//       .catch((error) => {
+//         console.log('Error:', error);
+        
+//         handleCloseModal();
+//       });
+
+//       handleCloseModal();
+//     }
+  
 
 //   return (
 //     <div className="container">
-//       <>
-//         <h1>Approved Teachers</h1>
-//         {approvedTeachers.map((teacher) => (
-//           <div key={teacher.id} className="card mb-3">
-//             <div className="card-body">
-//               <h3 className="card-title">{teacher.name}</h3>
-//               <p className="card-text">{teacher.description}</p>
-//               {/* Add more teacher details as needed */}
-//               <button className="btn btn-primary" onClick={() => handleAddTeacher(teacher.id)}>
-//                 Add Teacher
-//               </button>
+//       <h1>Approved Doctors</h1>
+//       <div className="row">
+//         {doctors.map((doctor) => (
+//           <div key={doctor.id} className="col-md-4">
+//             <div className="card mb-3">
+//               <div className="row no-gutters">
+//                 <div className="col-md-4">
+//                   <img
+//                     src={`https://localhost:7150/Images/${doctor.imageName}`}
+//                     alt="Doctor Profile"
+//                     className="card-img rounded-circle"
+//                     style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '25px', marginLeft: '10px' }}
+//                   />
+//                 </div>
+//                 <div className="col-md-8">
+//                   <div className="card-body">
+//                     <h5 className="card-title">{doctor.name}</h5>
+//                     <p className="card-text">{doctor.specialization}</p>
+//                     <div className="text-right">
+//                       <button className="btn btn-primary" onClick={() => handleAppointment(doctor.id)}>
+//                         Book Appointment
+//                       </button>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
 //             </div>
 //           </div>
 //         ))}
+//       </div>
 
-//         <SelectedTeachersComponent selectedTeachers={selectedTeachers} onRemoveTeacher={handleRemoveTeacher} />
-//       </>
+//       <Modal show={showModal} onHide={handleCloseModal}>
+//         <Modal.Header closeButton>
+//           <Modal.Title>Book Appointment</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           <Form onSubmit={handleSubmit}>
+//             <Form.Group controlId="diseaseDescription">
+//               <Form.Label>Short Description of Disease</Form.Label>
+              
+//               <Form.Control
+//                 type="text"
+//                 value={diseaseDescription}
+//                 onChange={(event) => setDiseaseDescription(event.target.value)}
+//                 required
+//               />
+//             </Form.Group>
+//             <Form.Group controlId="bookingDateTime">
+//               <Form.Label>Date and Time</Form.Label>
+//               <Form.Control
+//                 type="datetime-local"
+//                 value={bookingDateTime}
+//                 onChange={(event) => setBookingDateTime(event.target.value)}
+//                 required
+//               />
+//             </Form.Group>
+//             <Button variant="primary" type="submit">
+//               Book
+//             </Button>
+//           </Form>
+//         </Modal.Body>
+//       </Modal>
 //     </div>
 //   );
 // };
 
-// export default StudentComponent;
+// export default DoctorsList;
+
+
+
+// import React, { useState, useEffect } from 'react';
+// import Modal from 'react-bootstrap/Modal';
+// import Form from 'react-bootstrap/Form';
+// import Button from 'react-bootstrap/Button';
+// import jwt_decode from 'jwt-decode';
+// import { toast } from 'react-toastify';
+
+// const DoctorsList = () => {
+//   const [doctors, setDoctors] = useState([]);
+//   const [showModal, setShowModal] = useState(false);
+//   const [diseaseDescription, setDiseaseDescription] = useState('');
+//   const [bookingDateTime, setBookingDateTime] = useState('');
+//   const [filterName, setFilterName] = useState('');
+//   const [filterSpecialization, setFilterSpecialization] = useState('');
+
+//   const [rolefromtoken, setRoleFromToken] = useState('');
+//   const [patientidfromtoken, setpatientidFromToken] = useState('');
+//   const [doctorid1, setDoctorid] = useState('');
+
+//   useEffect(() => {
+//     fetchData();
+
+//     let token1 = sessionStorage.getItem('token');
+
+//     if (token1) {
+//       const tokenPayload = jwt_decode(token1);
+//       setRoleFromToken(tokenPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']); // Assuming the role property is named 'Role'
+//       setpatientidFromToken(tokenPayload['UserId']);
+//     }
+//   }, []);
+
+//   const fetchData = async () => {
+//     try {
+//       const response = await fetch('https://localhost:7150/api/Doctors?approved=true');
+//       const jsonData = await response.json();
+//       setDoctors(jsonData);
+//     } catch (error) {
+//       console.log('Error fetching data:', error);
+//     }
+//   };
+
+//   const handleAppointment = (doctorId) => {
+//     setDoctorid(doctorId);
+//     setShowModal(true);
+//   };
+
+//   const handleCloseModal = () => {
+//     setShowModal(false);
+//     setDiseaseDescription('');
+//     setBookingDateTime('');
+//     setDoctorid('');
+//   };
+
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+
+//     const formattedDateTime = new Date(bookingDateTime).toISOString();
+//     const encodedDate = encodeURIComponent(bookingDateTime);
+//     const apiUrl = `https://localhost:7150/api/Booking?patientId=${patientidfromtoken}&doctorId=${doctorid1}&bookingDateTime=${encodedDate}`;
+
+//     fetch(apiUrl, {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         patientId: patientidfromtoken,
+//         doctorId: doctorid1,
+//         bookingDateTime: encodedDate,
+//       }),
+//     })
+//       .then((response) => {
+//         console.log('Raw response:', response);
+//         toast.success('Appointment Booked Successfully', {
+//           autoClose: 1000, // Duration in milliseconds (2 seconds)
+//         });
+//         handleCloseModal();
+//         return response.json();
+//       })
+//       .then((data) => {
+//         toast.error('Booking Failed :' + data);
+//         handleCloseModal();
+//       })
+//       .catch((error) => {
+//         console.log('Error:', error);
+//         handleCloseModal();
+//       });
+
+//     handleCloseModal();
+//   };
+
+//   const handleFilterByName = (event) => {
+//     setFilterName(event.target.value);
+//   };
+
+//   const handleFilterBySpecialization = (event) => {
+//     setFilterSpecialization(event.target.value);
+//   };
+
+//   const filteredDoctors = doctors.filter((doctor) => {
+//     const doctorName = doctor.name.toLowerCase();
+//     const doctorSpecialization = doctor.specialization.toLowerCase();
+//     const filterNameLowercase = filterName.toLowerCase();
+//     const filterSpecializationLowercase = filterSpecialization.toLowerCase();
+
+//     return (
+//       doctorName.includes(filterNameLowercase) &&
+//       doctorSpecialization.includes(filterSpecializationLowercase)
+//     );
+//   });
+
+//   return (
+//     <div className="container">
+//       <h1>Approved Doctors</h1>
+//       <div className="row">
+//         <div className="col-md-12">
+//           <div className="filter-form">
+//             <div className="form-group">
+//               <label htmlFor="filterName">Filter by Name</label>
+//               <input
+//                 type="text"
+//                 className="form-control"
+//                 id="filterName"
+//                 value={filterName}
+//                 onChange={handleFilterByName}
+//               />
+//             </div>
+//             <div className="form-group">
+//               <label htmlFor="filterSpecialization">Filter by Specialization</label>
+//               <input
+//                 type="text"
+//                 className="form-control"
+//                 id="filterSpecialization"
+//                 value={filterSpecialization}
+//                 onChange={handleFilterBySpecialization}
+//               />
+//             </div>
+//           </div>
+//         </div>
+//         {filteredDoctors.map((doctor) => (
+//           <div key={doctor.id} className="col-md-4">
+//             <div className="card mb-3">
+//               <div className="row no-gutters">
+//                 <div className="col-md-4">
+//                   <img
+//                     src={`https://localhost:7150/Images/${doctor.imageName}`}
+//                     alt="Doctor Profile"
+//                     className="card-img rounded-circle"
+//                     style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '25px', marginLeft: '10px' }}
+//                   />
+//                 </div>
+//                 <div className="col-md-8">
+//                   <div className="card-body">
+//                     <h5 className="card-title">{doctor.name}</h5>
+//                     <p className="card-text">{doctor.specialization}</p>
+//                     <div className="text-right">
+//                       <button className="btn btn-primary" onClick={() => handleAppointment(doctor.id)}>
+//                         Book Appointment
+//                       </button>
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       <Modal show={showModal} onHide={handleCloseModal}>
+//         <Modal.Header closeButton>
+//           <Modal.Title>Book Appointment</Modal.Title>
+//         </Modal.Header>
+//         <Modal.Body>
+//           <Form onSubmit={handleSubmit}>
+//             <Form.Group controlId="diseaseDescription">
+//               <Form.Label>Short Description of Disease</Form.Label>
+//               <Form.Control
+//                 type="text"
+//                 value={diseaseDescription}
+//                 onChange={(event) => setDiseaseDescription(event.target.value)}
+//                 required
+//               />
+//             </Form.Group>
+//             <Form.Group controlId="bookingDateTime">
+//               <Form.Label>Date and Time</Form.Label>
+//               <Form.Control
+//                 type="datetime-local"
+//                 value={bookingDateTime}
+//                 onChange={(event) => setBookingDateTime(event.target.value)}
+//                 required
+//               />
+//             </Form.Group>
+//             <Button variant="primary" type="submit">
+//               Book
+//             </Button>
+//           </Form>
+//         </Modal.Body>
+//       </Modal>
+//     </div>
+//   );
+// };
+
+// export default DoctorsList;
 
 
 
 
-import React, { useEffect, useState } from "react";
 
-const SelectedTeachersComponent = ({ selectedTeachers, onRemoveTeacher }) => {
-  const handleRemoveTeacher = (teacherId) => {
-    onRemoveTeacher(teacherId);
-  };
+import React, { useState, useEffect } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import jwt_decode from 'jwt-decode';
+import { toast } from 'react-toastify';
 
-  return (
-    <div className="container">
-      <h1>Selected Teachers</h1>
-      {selectedTeachers.map((teacher) => (
-        <div key={teacher.id} className="card mb-3">
-          <div className="card-body">
-            <h3 className="card-title">{teacher.name}</h3>
-            <p className="card-text">{teacher.description}</p>
-            {/* Add more teacher details as needed */}
-            <button className="btn btn-danger" onClick={() => handleRemoveTeacher(teacher.id)}>
-              Remove
-            </button>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-};
+const DoctorsList = () => {
+  const [doctors, setDoctors] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [diseaseDescription, setDiseaseDescription] = useState('');
+  const [bookingDateTime, setBookingDateTime] = useState('');
+  const [filterText, setFilterText] = useState('');
 
-const StudentComponent = () => {
-  const [selectedTeachers, setSelectedTeachers] = useState([]);
-  const [approvedTeachers, setApprovedTeachers] = useState([]);
-  const [sid, setSid] = useState();
-
-  const fetchSelectedTeachers = async () => {
-    try {
-      const response = await fetch(`https://localhost:7185/api/Student/${sessionStorage.getItem("id")}`);
-      if (response.ok) {
-        const data = await response.json();
-        const tdata = await data.teachers;
-        setSelectedTeachers(tdata);
-      } else {
-        throw new Error("Error fetching selected teachers");
-      }
-    } catch (error) {
-      console.error("Error fetching selected teachers:", error);
-    }
-  };
+  const [rolefromtoken, setRoleFromToken] = useState('');
+  const [patientidfromtoken, setPatientIdFromToken] = useState('');
+  const [doctorid, setDoctorId] = useState('');
 
   useEffect(() => {
-    const setStuid = async () => {
-      await setSid(sessionStorage.getItem("id"));
-    };
+    fetchData();
 
-    const fetchSelectedTeachers = async () => {
-      try {
-        const response = await fetch(`https://localhost:7185/api/Student/${sessionStorage.getItem("id")}`);
-        if (response.ok) {
-          const data = await response.json();
-          const tdata = await data.teachers;
-          setSelectedTeachers(tdata);
-        } else {
-          throw new Error("Error fetching selected teachers");
-        }
-      } catch (error) {
-        console.error("Error fetching selected teachers:", error);
-      }
-    };
+    let token1 = sessionStorage.getItem('token');
 
-    const fetchApprovedTeachers = async () => {
-      try {
-        const response = await fetch("https://localhost:7185/api/Teachers?approved=true");
-        if (response.ok) {
-          const data = await response.json();
-          setApprovedTeachers(data);
-        } else {
-          throw new Error("Error fetching approved teachers");
-        }
-      } catch (error) {
-        console.error("Error fetching approved teachers:", error);
-      }
-    };
-
-    fetchApprovedTeachers();
-    fetchSelectedTeachers();
+    if (token1) {
+      const tokenPayload = jwt_decode(token1);
+      setRoleFromToken(tokenPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
+      setPatientIdFromToken(tokenPayload['UserId']);
+    }
   }, []);
 
-  const handleAddTeacher = async (teacherId) => {
-    if (teacherId) {
-      try {
-        const response = await fetch(
-          `https://localhost:7185/api/students/${sessionStorage.getItem("id")}/teachers/${teacherId}`,
-          // `https://localhost:7185/api/Student/addTeacher/${sessionStorage.getItem("id")}?teacherId=${teacherId}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (response.ok) {
-          fetchSelectedTeachers();
-          console.log("Teacher added successfully");
-        } else {
-          throw new Error("Error adding teacher");
-        }
-      } catch (error) {
-        console.error("Error adding teacher:", error);
-      }
-    } else {
-      console.error("No teacher selected");
-    }
-  };
-
-  const handleRemoveTeacher = async (teacherId) => {
+  const fetchData = async () => {
     try {
-      const response = await fetch(
-        `https://localhost:7185/api/students/${sessionStorage.getItem("id")}/teachers/${teacherId}`,
-        // `https://localhost:7185/api/Student/removeTeacher/${sessionStorage.getItem("id")}?teacherId=${teacherId}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      if (response.ok) {
-        setSelectedTeachers((prevTeachers) => prevTeachers.filter((teacher) => teacher.id !== teacherId));
-        console.log("Teacher removed successfully");
-      } else {
-        throw new Error("Error removing teacher");
-      }
+      const response = await fetch('https://localhost:7150/api/Doctors?approved=true');
+      const jsonData = await response.json();
+      setDoctors(jsonData);
     } catch (error) {
-      console.error("Error removing teacher:", error);
+      console.log('Error fetching data:', error);
     }
   };
 
-  const filteredApprovedTeachers = approvedTeachers.filter(
-    (teacher) => !selectedTeachers.some((selectedTeacher) => selectedTeacher.id === teacher.id)
-  );
+  const handleAppointment = (doctorId) => {
+    setDoctorId(doctorId);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setDiseaseDescription('');
+    setBookingDateTime('');
+    setDoctorId('');
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const date = new Date('2023-07-05T00:51');
+const formattedDateTime = date.toISOString();
+const encodedDate = encodeURIComponent(formattedDateTime);
+
+    console.log(bookingDateTime)
+    console.log("encd "+encodedDate)
+    console.log("format "+formattedDateTime)
+    const apiUrl = `https://localhost:7150/api/Booking?patientId=${patientidfromtoken}&doctorId=${doctorid}&bookingDateTime=${encodedDate}`;
+    const apiUrl1 = `https://localhost:7150/api/Booking?patientId=${patientidfromtoken}&doctorId=${doctorid}&bookingDateTime=${formattedDateTime}&disesasedescription=${diseaseDescription}`;
+    fetch(apiUrl1, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        patientId: patientidfromtoken,
+        doctorId: doctorid,
+        bookingDateTime: encodedDate,
+        diseasedescription:diseaseDescription
+      }),
+    })
+      .then((response) => {
+        console.log('Raw response:', response);
+        toast.success('Appointment Booked Successfully', {
+          autoClose: 1000, // Duration in milliseconds (2 seconds)
+        });
+        handleCloseModal();
+        return response.json();
+      })
+      .then((data) => {
+        toast.error('Booking Failed: ' + data);
+        handleCloseModal();
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+        handleCloseModal();
+      });
+
+    handleCloseModal();
+  };
+
+  const handleFilterChange = (event) => {
+    setFilterText(event.target.value);
+  };
+
+  const filteredDoctors = doctors.filter((doctor) => {
+    const filterTextLowercase = filterText.toLowerCase();
+    const doctorNameLowercase = doctor.name.toLowerCase();
+    const doctorSpecializationLowercase = doctor.specialization.toLowerCase();
+
+    return (
+      doctorNameLowercase.includes(filterTextLowercase) || doctorSpecializationLowercase.includes(filterTextLowercase)
+    );
+  });
 
   return (
     <div className="container">
-      <>
-        <h1>Approved Teachers</h1>
-        {filteredApprovedTeachers.map((teacher) => (
-          <div key={teacher.id} className="card mb-3">
-            <div className="card-body">
-              <h3 className="card-title">{teacher.name}</h3>
-              <p className="card-text">{teacher.description}</p>
-              {/* Add more teacher details as needed */}
-              <button className="btn btn-primary" onClick={() => handleAddTeacher(teacher.id)}>
-                Add Teacher
-              </button>
+      <h1>Approved Doctors</h1>
+
+      <div className="mb-3">
+        <label htmlFor="filterText" className="form-label">
+          Filter by Name or Specialization:
+        </label>
+        <input
+          type="text"
+          id="filterText"
+          className="form-control"
+          value={filterText}
+          onChange={handleFilterChange}
+        />
+      </div>
+
+      <div className="row">
+        {filteredDoctors.map((doctor) => (
+          <div key={doctor.id} className="col-md-4">
+            <div className="card mb-3">
+              <div className="row no-gutters">
+                <div className="col-md-4">
+                  <img
+                    src={`https://localhost:7150/Images/${doctor.imageName}`}
+                    alt="Doctor Profile"
+                    className="card-img rounded-circle"
+                    style={{ width: '100px', height: '100px', objectFit: 'cover', marginTop: '25px', marginLeft: '10px' }}
+                  />
+                </div>
+                <div className="col-md-8">
+                  <div className="card-body">
+                    <h5 className="card-title">
+                      {doctor.name} ({doctor.specialization})
+                    </h5>
+                    <div className="text-right">
+                      <button className="btn btn-primary" onClick={() => handleAppointment(doctor.id)}>
+                        Book Appointment
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ))}
+      </div>
 
-        <SelectedTeachersComponent selectedTeachers={selectedTeachers} onRemoveTeacher={handleRemoveTeacher} />
-      </>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Book Appointment</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="diseaseDescription">
+              <Form.Label>Short Description of Disease</Form.Label>
+
+              <Form.Control
+                type="text"
+                value={diseaseDescription}
+                onChange={(event) => setDiseaseDescription(event.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group controlId="bookingDateTime">
+              <Form.Label>Date and Time</Form.Label>
+              <Form.Control
+                type="datetime-local"
+                value={bookingDateTime}
+                onChange={(event) => setBookingDateTime(event.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit">
+              Book
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 };
 
-export default StudentComponent;
-
-
-
-
-
-
+export default DoctorsList;
 
 
 
