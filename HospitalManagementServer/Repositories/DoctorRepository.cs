@@ -30,6 +30,7 @@ namespace HospitalManagementServer.Repositories
                 Id = d.Id,
                 Name = d.Name,
                 Specialization = d.Specialization,
+                Experience =d.Experience,
                 ImageName = d.ImageName,
                 Approved = d.Approved
             }).ToListAsync();
@@ -83,6 +84,7 @@ namespace HospitalManagementServer.Repositories
         public async Task<IActionResult> DeleteDoctor(int id)
         {
             Doctor doctor = await _dbContext.Doctors.FirstOrDefaultAsync(d => d.Id == id);
+            RegisterUser user  = await _dbContext.RegisterUser.FirstOrDefaultAsync(d => d.Id == id);
 
             if (doctor == null)
             {
@@ -90,6 +92,7 @@ namespace HospitalManagementServer.Repositories
             }
 
             _dbContext.Doctors.Remove(doctor);
+            _dbContext.RegisterUser.Remove(user);
             await _dbContext.SaveChangesAsync();
 
             return new NoContentResult();

@@ -1,101 +1,4 @@
-// import { useEffect, useState } from "react";
-// import { Link, useNavigate } from "react-router-dom";
-// import { toast } from "react-toastify";
-// import Appheader from "../HeaderComponent/Appheader";
-// import './Login.css'
 
-// const Login = () => {
-//     const [username, usernameupdate] = useState('');
-//     const [password, passwordupdate] = useState('');
-
-//     const usenavigate=useNavigate();
-
-//     useEffect(()=>{
-// sessionStorage.clear();
-//     },[]);
-
-                                                                                                      
-
-//     const ProceedLoginusingAPI = (e) => {
-//         e.preventDefault();
-//         if (validate()) {
-           
-//             let inputobj={"username": username,
-//             "password": password};
-//             fetch("https://localhost:7150/api/Auth/Login",{
-//                 method:'POST',
-//                 headers:{'content-type':'application/json'},
-//                 body:JSON.stringify(inputobj)
-//             }).then((res) => {
-//                 return res.json();
-//             }).then((resp) => {
-//                 console.log(resp)
-//                 if (Object.keys(resp).length === 0) {
-//                     toast.error('Login failed, invalid credentials');
-//                 }else{
-//                     toast.success('Success', {
-//                         autoClose: 2000, // Duration in milliseconds (2 seconds)
-//                       });
-//                      sessionStorage.setItem('username',username);
-//                      sessionStorage.setItem('token',resp.token);
-//                      sessionStorage.setItem('role',resp.user.role);
-//                      sessionStorage.setItem('id',resp.user.id);
-//                    usenavigate('/');
-//                    setTimeout(function() {
-//                     window.location.reload();
-//                   }, 3000);
-//                 }
-             
-//             }).catch((err) => {
-//                 toast.error('Login Failed due to :' + err.message);
-//             });
-//         }
-//     }
-//     const validate = () => {
-//         let result = true;
-//         if (username === '' || username === null) {
-//             result = false;
-//             toast.warning('Please Enter Username');
-//         }
-//         if (password === '' || password === null) {
-//             result = false;
-//             toast.warning('Please Enter Password');
-//         }
-//         return result;
-//     }
-//     return (
-
-        
-//         <div className="row">
-           
-//             <div className="offset-lg-3 col-lg-6" style={{ marginTop: '100px' }}>
-//                 <form onSubmit={ProceedLoginusingAPI} className="container">
-//                     <div className="card">
-//                         <div className="card-header">
-//                             <h2>User Login</h2>
-//                         </div>
-//                         <div className="card-body">
-//                             <div className="form-group">
-//                                 <label>User Name <span className="errmsg">*</span></label>
-//                                 <input value={username} onChange={e => usernameupdate(e.target.value)} className="form-control"></input>
-//                             </div>
-//                             <div className="form-group">
-//                                 <label>Password <span className="errmsg">*</span></label>
-//                                 <input type="password" value={password} onChange={e => passwordupdate(e.target.value)} className="form-control"></input>
-//                             </div>
-//                         </div>
-//                         <div className="card-footer">
-//                             <button type="submit" className="btn btn-primary">Login</button> |
-//                             <Link className="btn btn-success" to={'/register'}>New User</Link>
-//                         </div>
-//                     </div>
-//                 </form>
-//             </div>
-//         </div>
-//     );
-// }
-
-// export default Login;
 
 
 
@@ -107,9 +10,7 @@ import "./Login.css";
 import { Modal } from "react-bootstrap"; 
 
 
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faFacebook } from '@fortawesome/free-brands-svg-icons';
-// import '@fortawesome/fontawesome-svg-core/styles.css';
+
 
 
 
@@ -160,7 +61,8 @@ const Login = () => {
           }
         })
         .catch((err) => {
-          toast.error("Login Failed due to :" + err.message);
+          toast.error("Login Failed due to :" +"User Not Found Or Invalid Password");
+          console.log(err)
         });
     }
   };
@@ -279,16 +181,16 @@ const Login = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
+            <li  className="nav-item">
               <Link className="nav-link" to="#" onClick={handleLoginClick}>
-                Login
+                <span style={{marginRight:'1px'}}>Login</span> <i id="sign-in" class="fa fa-sign-in" aria-hidden="true"></i> 
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link" to="/register">
                 New User
               </Link>
-            </li>
+            </li> 
           </ul>
         </div>
       </nav>
@@ -330,7 +232,7 @@ const Login = () => {
       <div className="container1">
     <section>
       <em>WELCOME TO PRIME LIFE MEDICAL CENTER</em>
-      <h1>Take the world's best quality Treatment</h1>
+      <h1>Take the world's best Quality Treatment</h1>
       <h4>
       Choose us for reliable and comprehensive healthcare, and embark on a journey towards improved well-being and a healthier life.
 
@@ -630,158 +532,89 @@ With our expertise, advanced technology, and patient-centered approach, we are c
     </div>
   </section>
   {/*FOOTER*/}
+
+
+
   <img src="https://i.ibb.co/ZLHbWJz/footer.png" className="footer_image" alt=""/>
-  <footer>
-    <div className="column">
-      <a href="fc" className="footer_title">PRIME_LIFE</a>
-      <a href="ds">
-      Choose our hospital for certified services that meet your healthcare needs. Experience high-quality care and reliable treatments backed by our commitment to excellence and industry standards.
-      </a>
-      <a href="sd" title="Facebook">
-      {/* <FontAwesomeIcon icon={faFacebook} /> */}
-      <svg
-  style={{ color: "blue" }}
-  xmlns="http://www.w3.org/2000/svg"
-  width={25}
-  height={30}
-  fill="currentColor"
-  className="bi bi-facebook"
-  viewBox="0 0 16 16"
->
-  {" "}
-  <path
-    d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"
-    fill="blue"
-  />{" "}
-</svg>
-      </a>
-      <a href="sf" title="Instagram">
-      <svg
-  style={{ color: "red" }}
-  xmlns="http://www.w3.org/2000/svg"
-  width={25}
-  height={30}
-  fill="currentColor"
-  className="bi bi-instagram"
-  viewBox="0 0 16 16"
->
-  {" "}
-  <path
-    d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"
-    fill="red"
-  />{" "}
-</svg>
-      </a>
-      <a href="sf" title="Twitter">
-      <svg
-  style={{ color: "blue" , top:"100px"}}
-  xmlns="http://www.w3.org/2000/svg"
-  width={25}
-  height={30}
-  fill="currentColor"
-  className="bi bi-twitter"
-  viewBox="0 0 16 16"
->
-  {" "}
-  <path
-    d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
-    fill="blue"
-  />{" "}
-</svg>
-      </a>
-    </div>
-    {/* <div className="column">
-      <a href="ds" className="footer_title">OTHER LINKS</a>
-      <a href="sd">Privacy Policy</a>
-      <a href="sd">Terms &amp; Conditions</a>
-      <a href="sd">Ticket</a>
-      <a href="sd">Contact Us</a>
-    </div> */}
-    {/* <div className="column">
-      <a href="se" className="footer_title">SHORT CUT</a>
-      <a href="e">Our Services</a>
-      <a href="e">Our Blog</a>
-      <a href="e">Our Projects</a>
-      <a href="e">About Us</a>
-    </div> */}
-   
-    <div className="column">
-      <a href="s" className="footer_title">GET IN TOUCH</a>
-      <a href="sd" title="Address">
-        <i className="fa fa-map-marker" /> 12, Vanchinathan Street, Parvathi Nagar /TamilNadu, India
-        - 600063
-      </a>
-      <a href="emailto:" title="Email">
-        <i className="fa fa-envelope" />PrimeLifeSupport@primelife.com
-      </a>
-      <a href="tel:" title="Contact">
-        <i className="fa fa-phone" /> +(91)8248360541
-      </a>
-    </div>
-    <div className="sub-footer">
-      © CopyRights 2021 PRIME_LIFE || All rights reserved
-    </div>
-  </footer>
-
-   
-
-      {/* <div
-  id="carouselExampleSlidesOnly"
-  className="carousel slide"
-  data-ride="carousel"
->
+ 
 
  
-  <div className="carousel-inner">
-  
-    <div className="carousel-item active">
-      
-      <img className="d-block w-100" src="https://www.imd-soft.co.uk/media/1785/imd_hospitalwide_banner1.jpg?width=1600&height=530&mode=crop" alt="First slide" />
-    </div>
-    <div className="carousel-item">
-      <img className="d-block w-100" src="https://img.freepik.com/premium-psd/medical-healthcare-facebook-timeline-cover-web-banner-template_169307-1230.jpg" alt="Second slide" />
-    </div>
-    <div className="carousel-item">
-      <img className="d-block w-100" src="../assets/5915088.jpg" alt="Third slide" />
-    </div>
-  </div>
-
-  
-</div>
 
 
-
-
-<div className="card" style={{ width: 500 }}>
-  <div className="row no-gutters">
-    <div className="col-sm-5">
-      <img
-        className="card-img"
-        src="/images/defaultimg.png"
-        alt="Suresh Dasari Card"
-      />
-    </div>
-    <div className="col-sm-7">
-      <div className="card-body">
-        <h5 className="card-title">Suresh Dasari</h5>
-        <p className="card-text">
-          Suresh Dasari is a founder and technical lead developer in tutlane.
-        </p>
-        <a href="#" className="btn btn-primary">
-          View Profile
-        </a>
+  <div className="footer">
+  <div className="container">
+    <div className="row">
+      <div className="col-lg-4 col-sm-4 col-xs-12">
+        <div className="single_footer">
+          <h4>Services</h4>
+          <ul>
+            <li>
+              <a href="none">Book Appointment</a>
+            </li>
+            <li>
+              <a href="none">View Our Doctor</a>
+            </li>
+            <li>
+              <a href="none">Hassle Free Appointment</a>
+            </li>
+          
+          </ul>
+        </div>
       </div>
+      {/*- END COL */}
+      
+      {/*- END COL */}
+      <div className="col-md-4 col-sm-4 col-xs-12">
+        <div className="single_footer single_footer_address">
+          <h4>Subscribe today</h4>
+          <div className="signup_form">
+           
+          </div>
+        </div>
+        <div className="social_profile">
+          <ul>
+            <li>
+              <a href="none">
+                <i className="fab fa-facebook-f" />
+              </a>
+            </li>
+            <li>
+              <a href="none">
+                <i className="fab fa-twitter" />
+              </a>
+            </li>
+            <li>
+              <a href="none">
+                <i className="fab fa-google-plus-g" />
+              </a>
+            </li>
+            <li>
+              <a href="none">
+                <i className="fab fa-instagram" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      {/*- END COL */}
     </div>
+    {/*- END ROW */}
+    <div className="row">
+      <div className="col-lg-12 col-sm-12 col-xs-12">
+        <p className="copyright">
+          Copyright © 2019 <a href="none">PRIME LIFE</a>.
+        </p>
+      </div>
+      {/*- END COL */}
+    </div>
+    {/*- END ROW */}
   </div>
+  {/*- END CONTAINER */}
 </div>
 
+   
 
-      <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-primary text-white-50">
-    <div class="container text-center">
-      <small>Copyright &copy; Your Website</small>
-    </div>
-  </footer> */}
-
+  
 
     </>
   );

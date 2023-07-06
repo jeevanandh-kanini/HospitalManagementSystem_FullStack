@@ -8,6 +8,8 @@
 
         public string ImageName { get; set; }
 
+        public int? Experience { get; set; }
+
         public bool Approved { get; set; }
     }
 }

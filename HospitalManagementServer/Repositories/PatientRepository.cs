@@ -82,6 +82,8 @@ namespace HospitalManagementServer.Repositories
             try
             {
                 var patient = await _context.Patients.FirstOrDefaultAsync(s => s.Id == id);
+                var user = await _context.RegisterUser.FirstOrDefaultAsync(s => s.Id == id);
+                
 
                 if (patient == null)
                 {
@@ -89,6 +91,9 @@ namespace HospitalManagementServer.Repositories
                 }
 
                 _context.Patients.Remove(patient);
+                _context.RegisterUser.Remove(user);
+                await _context.SaveChangesAsync();
+
                 await _context.SaveChangesAsync();
 
                 return true;

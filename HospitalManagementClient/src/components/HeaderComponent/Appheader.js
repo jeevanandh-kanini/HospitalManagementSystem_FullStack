@@ -1,122 +1,3 @@
-
-
-
-// import { useState, useEffect } from "react";
-// import { NavLink, useLocation, useNavigate } from "react-router-dom";
-// import './Appheader.css'
-
-// const Appheader = () => {
-//   const USER_TYPES = {
-//     patient: 'patient',
-//     doctor: 'doctor',
-//     admin: 'admin'
-//   };
-
-//   const [role, setRole] = useState('');
-//   const [displayUsername, setDisplayUsername] = useState('');
-//   const [showMenu, setShowMenu] = useState(false);
-
-//   const navigate = useNavigate();
-//   const location = useLocation();
-
-//   useEffect(() => {
-//     if (location.pathname === '/login' || location.pathname === '/register') {
-//       setShowMenu(false);
-//     } else {
-//       setShowMenu(true);
-//       let username = sessionStorage.getItem('username');
-//       let trole = sessionStorage.getItem('role');
-
-//       if (username === '' || username === null) {
-//         navigate('/login');
-//       } else {
-//         setDisplayUsername(username);
-//         setRole(trole);
-//       }
-//     }
-//   }, [location]);
-
-
-
-
-  
-
-
-//   return (
-//     <div>
-//       {showMenu && (
-//         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-//           <div className="container">
-
-//           <NavLink className="navbar-brand" to="">
-//         <a href="https://ibb.co/6XfrSDB">
-//   <img
-//     src="https://i.ibb.co/6XfrSDB/134689637-padded-logo.png"
-//     alt="134689637-padded-logo"
-//     border={0}
-//     id="logo"
-//   />
-// </a>
-//         </NavLink>
-//             <NavLink className="navbar-brand" to="/" activeClassName="active">
-//               Home
-//             </NavLink>
-
-//             {(role === USER_TYPES.patient) && (
-//               <>
-
-//               <NavLink className="nav-link" to="/student" activeClassName="active">
-//                 Our Doctors
-//               </NavLink>
-
-//               <NavLink className="nav-link" to="/yourappointment" activeClassName="active">
-//                 Your Appointment
-//               </NavLink>
-
-//               </>
-
-              
-//             )}
-
-//             {(role === USER_TYPES.doctor) && (
-//               <NavLink className="nav-link" to="/teacher" activeClassName="active">
-//                 Teacher
-//               </NavLink>
-//             )}
-
-//             {(role === USER_TYPES.admin) && (
-//               <>
-//                 <NavLink className="nav-link" to="/admin" activeClassName="active">
-//                   Pending Approval
-//                 </NavLink>
-//                 <NavLink className="nav-link" to="/teacherlist" activeClassName="active">
-//                   Doctor List
-//                 </NavLink>
-//                 <NavLink className="nav-link" to="/userappointmentlist" activeClassName="active">
-//                   Consultaion Requests  
-//                 </NavLink>
-//               </>
-//             )}
-
-//             <span className="navbar-text ml-auto">
-//               Welcome <b>{displayUsername}</b> 
-//             </span>
-
-//             <NavLink className="nav-link" to="/login" activeClassName="active">
-//               Logout
-//             </NavLink>
-//           </div>
-//         </nav>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Appheader;
-
-
-
-
 import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import './Appheader.css'
@@ -134,6 +15,9 @@ const Appheader = () => {
   const [displayUsername, setDisplayUsername] = useState('');
   const [showMenu, setShowMenu] = useState(false);
   const [doctorImage, setDoctorImage] = useState('');
+
+
+  const [patientImage ,setPatientImage]=useState('');
 
 
 
@@ -209,7 +93,7 @@ const handleUpdateDoctor = async () => {
         setDisplayUsername(username);
         setRole(tokenPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
 
-        if (trole === USER_TYPES.doctor) {
+        if (trole === USER_TYPES.doctor || trole=== USER_TYPES.patient) {
           let token1 = sessionStorage.getItem('token');
 
           if (token1) {
@@ -221,10 +105,11 @@ const handleUpdateDoctor = async () => {
             setRoleFromToken(tokenPayload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']);
           setIdFromToken(tokenPayload['UserId']);
           fetchDoctorData(idfromtoken);
+          fetchPatientData(idfromtoken);
         }
       }
     }
-  }, [location,doctorImage]);
+  }, [location,doctorImage,patientImage]);
 
   const fetchDoctorData = async (doctorId) => {
     try {
@@ -240,129 +125,183 @@ const handleUpdateDoctor = async () => {
 
 
 
+  const fetchPatientData = async (doctorId) => {
+    try {
+      console.log('sddsds  '+doctorId)
+      const response = await fetch(`https://localhost:7150/api/Patient/${doctorId}`);
+      const jsonData = await response.json();
+      setPatientImage(jsonData.imageName);
+
+      console.log(patientImage);
+    } catch (error) {
+      console.log('Error fetching doctor data:', error);
+    }
+  };
+
+
+
   return (
     <div>
-      {showMenu && (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-          <div className="container">
-            <NavLink className="navbar-brand" to="/">
-              <a href="https://ibb.co/6XfrSDB">
+    {showMenu && (
+      <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div className="container">
+          <NavLink className="navbar-brand" to="/">
+            <a href="https://ibb.co/6XfrSDB">
+              <img
+                src="https://i.ibb.co/6XfrSDB/134689637-padded-logo.png"
+                alt="134689637-padded-logo"
+                border={0}
+                id="logo"
+              />
+            </a>
+          </NavLink>
+  
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+  
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <NavLink className="nav-link" exact to="/" activeClassName="active">
+                  <i className="fa fa-home" aria-hidden="true"></i> Home
+                </NavLink>
+              </li>
+  
+              {role === USER_TYPES.patient && (
+                <>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/student" activeClassName="active">
+                      <i className="fa fa-user-md" aria-hidden="true"></i> Our Doctors
+                    </NavLink>
+                  </li>
+  
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/yourappointment" activeClassName="active">
+                      Appointment Status
+                    </NavLink>
+                  </li>
+                </>
+              )}
+  
+              {role === USER_TYPES.doctor && (
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/appointmentlist" activeClassName="active">
+                    Appointment List
+                  </NavLink>
+                </li>
+              )}
+  
+              {role === USER_TYPES.admin && (
+                <>
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/admin" activeClassName="active">
+                      Pending Approval
+                    </NavLink>
+                  </li>
+  
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/teacherlist" activeClassName="active">
+                      Doctor List
+                    </NavLink>
+                  </li>
+  
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/userappointmentlist" activeClassName="active">
+                      Consultation Requests
+                    </NavLink>
+                  </li>
+                </>
+              )}
+            </ul>
+  
+            <span className="navbar-text" style={{display:'flex' ,flexDirection:'row'}}>
+             <p style={{marginTop:'10px'}}>Welcome  </p>  <b style={{marginTop:'10px',marginLeft:'7px'}}>{displayUsername}</b>
+              {role === USER_TYPES.patient && (
+                <>
                 <img
-                  src="https://i.ibb.co/6XfrSDB/134689637-padded-logo.png"
-                  alt="134689637-padded-logo"
-                  border={0}
-                  id="logo"
+                  src={`https://localhost:7150/Images/${patientImage}`}
+                  alt="Patient Profile"
+                  className="rounded-circle ml-2"
+                  style={{ width: '50px', height: '50px', cursor: 'pointer' }}
                 />
-              </a>
-            </NavLink>
-            <NavLink className="navbar-brand" to="/" activeClassName="active">
-              Home
-            </NavLink>
-
-            {(role === USER_TYPES.patient) && (
-              <>
-                <NavLink className="nav-link" to="/student" activeClassName="active">
-                  Our Doctors
-                </NavLink>
-
-                <NavLink className="nav-link" to="/yourappointment" activeClassName="active">
-                  Your Appointment
-                </NavLink>
               </>
-            )}
-
-            {(role === USER_TYPES.doctor) && (
-              <>
-              {/* <NavLink className="nav-link" to="/teacher" activeClassName="active">
-                Teacher
-              </NavLink> */}
-
-<NavLink className="nav-link" to="/appointmentlist" activeClassName="active">
-Appointment List
-</NavLink>
-</>
-            )}
-
-            {(role === USER_TYPES.admin) && (
-              <>
-                <NavLink className="nav-link" to="/admin" activeClassName="active">
-                  Pending Approval
-                </NavLink>
-                <NavLink className="nav-link" to="/teacherlist" activeClassName="active">
-                  Doctor List
-                </NavLink>
-                <NavLink className="nav-link" to="/userappointmentlist" activeClassName="active">
-                  Consultation Requests
-                </NavLink>
-              </>
-            )}
-
-<span className="navbar-text ml-auto">
-  Welcome <b>{displayUsername}</b>
-  {role === USER_TYPES.doctor && (
-    <>
-      <img
-        src={`https://localhost:7150/Images/${doctorImage}`}
-        alt="Doctor Profile"
-        className="rounded-circle ml-2"
-        style={{ width: '50px', height: '50px', cursor: 'pointer' }}
-        onClick={handleOpenModal}
-      />
-
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Doctor Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group">
-              <label>Name:</label>
-              <input
-                type="text"
-                className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Specialization:</label>
-              <input
-                type="text"
-                className="form-control"
-                value={specialization}
-                onChange={(e) => setSpecialization(e.target.value)}
-              />
-            </div>
-            <div className="form-group">
-              <label>Image:</label>
-              <input
-                type="file"
-                className="form-control-file"
-                onChange={(e) => setImageFile(e.target.files[0])}
-              />
-            </div>
-          </form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleUpdateDoctor}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  )}
-</span>
-
-            <NavLink className="nav-link" to="/login" activeClassName="active">
-              Logout
-            </NavLink>
+              )}
+              {role === USER_TYPES.doctor  && (
+                <>
+                  <img
+                    src={`https://localhost:7150/Images/${doctorImage}`}
+                    alt="Doctor Profile"
+                    className="rounded-circle ml-2"
+                    style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+                    onClick={handleOpenModal}
+                  />
+                  
+  
+                  <Modal show={showModal} onHide={handleCloseModal}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Edit Doctor Details</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <form>
+                        <div className="form-group">
+                          <label>Name:</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Specialization:</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={specialization}
+                            onChange={(e) => setSpecialization(e.target.value)}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Image:</label>
+                          <input
+                            type="file"
+                            className="form-control-file"
+                            onChange={(e) => setImageFile(e.target.files[0])}
+                          />
+                        </div>
+                      </form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                      </Button>
+                      <Button variant="primary" onClick={handleUpdateDoctor}>
+                        Save Changes
+                      </Button>
+                    </Modal.Footer>
+                  </Modal>
+                </>
+              )}
+  
+              <NavLink className="nav-link" to="/login" activeClassName="active">
+                Logout <i className="fa fa-sign-out" aria-hidden="true"></i>
+              </NavLink>
+            </span>
           </div>
-        </nav>
-      )}
-    </div>
+        </div>
+      </nav>
+    )}
+  </div>
+  
   );
 }
 

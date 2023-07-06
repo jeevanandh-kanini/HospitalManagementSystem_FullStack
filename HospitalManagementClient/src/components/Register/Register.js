@@ -147,6 +147,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import backgroundImg from '../assets/v870-tang-36.jpg';
 
 import './Register.css'
 
@@ -237,6 +238,8 @@ console.log(formData);
 
   return (
     <>
+
+    <div  style={{ backgroundImage: `url(${backgroundImg})`,position:'absolute' ,width:'100%',height:'120%' }}>
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-primary">
         <Link className="navbar-brand" to="/">
@@ -266,11 +269,11 @@ console.log(formData);
           </ul>
         </div>
       </nav>
-      <div className="offset-lg-3 col-lg-6">
+      <div className="offset-lg-3 col-lg-6"  style={{ marginTop:'100px' }}>
         <form className="container" onSubmit={handleSubmit}>
           <div className="card">
             <div className="card-header">
-              <h1>User Registration</h1>
+              <h1>Sign Up</h1>
             </div>
             <div className="card-body">
               <div className="row">
@@ -302,9 +305,10 @@ console.log(formData);
                       value={role}
                       onChange={(e) => setRole(e.target.value)}
                       className="form-control"
+                      required
                     >
                       <option value="">Select a role</option>
-                      <option value="admin">Admin</option>
+                      <option disabled value="admin">Admin</option>
                       <option value="patient">Patient</option>
                       <option value="doctor">Doctor</option>
                     </select>
@@ -356,6 +360,11 @@ console.log(formData);
                           className="form-control-file"
                         />
                       </div>
+
+
+
+
+                      
                     </div>
                   </>
                 )}
@@ -370,8 +379,26 @@ console.log(formData);
                         type="number"
                         className="form-control"
                       />
+
+
+                      
                     </div>
+
+                    <label>Upload Photo</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handlePhotoUpload}
+                          className="form-control-file"
+                        />
+                   
+                     
+                        
+                    
+                    
                   </div>
+
+                  
                 )}
               </div>
             </div>
@@ -389,6 +416,8 @@ console.log(formData);
       </div>
       
       
+    </div>
+
     </div>
     
   </>

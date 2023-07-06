@@ -6,7 +6,7 @@ const YourAppointments = () => {
 
 
 
-//   const [patientidfromtoken,setpatientidFromToken] = useState("");
+
   useEffect(() => {
     fetchAppointments();
 
@@ -68,8 +68,8 @@ const YourAppointments = () => {
                   <h5 className="card-title">{appointment.doctor.name}</h5>
                   <p className="card-text">{appointment.doctor.specialization}</p>
                   <p className="card-text">Booking Date and Time: {formatDateTime(appointment.bookingDateTime)}</p>
-                  <div style={{ backgroundColor: getStatusColor(appointment.bookingStatus), color: 'white', padding: '5px' }}>
-                    {appointment.bookingStatus}
+                  <div style={{ backgroundColor: getStatusColor(appointment.bookingStatus), color: 'white', padding: '5px' ,borderRadius:'30px' ,textAlign:'center'}}>
+                        {appointment.bookingStatus=== 'Approved' ? 'Confirmed' : 'Pending'}
                   </div>
                 </div>
               </div>
